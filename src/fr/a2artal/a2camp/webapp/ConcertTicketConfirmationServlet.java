@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.amazonaws.services.simpledb.util.SimpleDBUtils;
+
 /**
  * Servlet implementation class ConcertTicketConfirmationServlet
  */
@@ -52,7 +54,14 @@ public class ConcertTicketConfirmationServlet extends HttpServlet {
 		String folderName = basePath + "concert-" + concertId;
 		FileDataStore.getInstance().store(folderName, "", uuid.toString() + ".txt", content2Store);
 		
-		//TODO-NCU: send it through SQS
+		//send it through SQS
+		SQSQueue sqsUpdateQueue = new SQSQueue("A2Camp-BI-UpdatesQueue", "AwsCredentials.properties");
+		try {
+			sqsUpdateQueue.pushData(content2Store);
+		} catch (Exception e) {
+			response.setStatus(500);
+			return;
+		}
 		
 		//return message indicating everything went fine!
 		response.setContentType("text/html");
