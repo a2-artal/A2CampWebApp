@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.amazonaws.services.simpledb.util.SimpleDBUtils;
-
 /**
  * Servlet implementation class ConcertTicketConfirmationServlet
  */
